@@ -35,8 +35,11 @@ module Hangman
 
     def display_game_state
       @game_running = false
+      puts ""
       display_word
-      display_letters_guessed
+      puts "Letters guessed: #{@letters_guessed.sort.join}"
+      puts "Wrong guesses remaining: #{@guesses_remaining}"
+      puts ""
     end
 
     private
@@ -51,10 +54,6 @@ module Hangman
         end
       end
       puts ""
-    end
-
-    def display_letters_guessed
-      puts "Letters guessed: #{@letters_guessed.reduce { |str, letter| str + letter }}"
     end
 
     def play_round
