@@ -104,13 +104,14 @@ module Hangman
       when "save"
         puts "Saving"
       when "exit"
-        puts "Exiting"
+        puts "Exiting."
       when "new"
         puts "Starting new game"
       end
     end
 
     def ask_continuation
+      puts "The word was #{@word}."
       puts "Would you like to play again? (Y/N)"
       @exit_type = if gets.chomp == "Y"
                      "new"
