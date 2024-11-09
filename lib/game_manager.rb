@@ -18,13 +18,17 @@ module Hangman
     # based on user input, choose what instance of hangman to start. return what the manager should do next
     def begin_game(response)
       if response == "N"
-        @game_playing = Hangman::Game.new
+        @game_playing = Hangman::Game.new(find_word, [], 7)
         @game_playing.play_game
       elsif response == "L"
         load_game
       else
         "error"
       end
+    end
+
+    def find_word
+      "apple"
     end
 
     # return "N" for new game or "L" for load
@@ -36,8 +40,12 @@ module Hangman
       case exit
       when "new"
         start_game
+      when "saveexit"
+        save_game
+        end_game("exit")
       when "save"
         save_game
+        start_game
       when "leave"
         exit_game
       when "error"
