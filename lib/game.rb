@@ -115,8 +115,12 @@ module Hangman
 
     def ask_continuation
       puts "The word was #{@word}."
-      puts "Would you like to play again? (Y/N)"
-      @exit_type = if gets.chomp == "Y"
+      input = ""
+      until %w[Y N].include?(input)
+        puts "Would you like to play again? (Y/N)"
+        input = gets.chomp
+      end
+      @exit_type = if input == "Y"
                      "new"
                    else
                      "exit"

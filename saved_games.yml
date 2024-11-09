@@ -2,13 +2,11 @@
 :saves:
 - |
   ---
-  :word: dicke
+  :word: resident
   :letters:
-  - w
   - e
-  - r
   - d
-  :guesses: 5
+  :guesses: 7
 - |
   ---
   :word: northwest
@@ -21,4 +19,5 @@
   - e
   - i
   - "n"
+  - o
   :guesses: 2
