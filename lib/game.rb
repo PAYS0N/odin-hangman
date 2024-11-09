@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require("yaml")
+
 module Hangman
   # class that stores a game state
   class Game
@@ -16,6 +18,23 @@ module Hangman
     def play_game
       play_round while @guesses_remaining.positive? && @game_running
       end_game
+    end
+
+    def to_yaml
+      YAML.dump({
+                  word: @word,
+                  letters: @letters_guessed,
+                  guesses: @guesses_remaining
+                })
+    end
+
+    def self.from_yaml(string)
+      data = YAML.load string
+      new(data[:word], data[:letters], data[:guesses])
+    end
+
+    def display_game_state
+      puts "You have guessed #{@letters_guessed} with #{@guesses_remaining} guesses remaining"
     end
 
     private
@@ -35,10 +54,6 @@ module Hangman
     def update_game_state(char)
       @letters_guessed.push(char)
       @guesses_remaining -= 1 unless char == "a"
-    end
-
-    def display_game_state
-      puts "You have guessed #{@letters_guessed} with #{@guesses_remaining} guesses remaining"
     end
 
     def word_guessed?
@@ -68,6 +83,7 @@ module Hangman
     def end_game
       ask_continuation if @exit_type == "check_exit"
       print_end_of_game
+      @exit_type
     end
 
     def print_end_of_game

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "yaml"
+require("yaml")
 require_relative("game")
 
 module Hangman
@@ -58,12 +58,47 @@ module Hangman
     end
 
     def load_game
-      puts "load"
-      "exit"
+      saves = open_saves
+      saves.each_with_index do |save, i|
+        print "#{i + 1}. "
+        Hangman::Game.from_yaml(save).display_game_state
+      end
+      game_num = ask_load(saves.length) - 1
+      @game_playing = Hangman::Game.from_yaml(saves[game_num])
+      saves.delete_at(game_num)
+      write_saves(saves)
+      @game_playing.display_game_state
+      @game_playing.play_game
+    end
+
+    def ask_load(length)
+      puts "What game would you like to load? Enter the number next to the game."
+      input = 0
+      input = gets.chomp.to_i until input.between?(1, length + 1)
+      input
     end
 
     def save_game
-      puts "save"
+      saves = open_saves
+      saves.push(@game_playing.to_yaml)
+      write_saves(saves)
+      "exit"
+    end
+
+    def open_saves
+      saves = YAML.load_file("saved_games.yml")[:saves]
+
+      if saves.nil?
+        []
+      else
+        saves
+      end
+    end
+
+    def write_saves(saves)
+      f = File.open("saved_games.yml", "w")
+      f.puts YAML.dump({ saves: saves })
+      f.close
     end
   end
 end
