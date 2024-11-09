@@ -1,11 +1,2 @@
 ---
-:saves:
-- |
-  ---
-  :word: apple
-  :letters:
-  - e
-  - f
-  - r
-  - w
-  :guesses: 3
+:saves: []

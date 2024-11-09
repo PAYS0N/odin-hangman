@@ -34,17 +34,33 @@ module Hangman
     end
 
     def display_game_state
-      puts "You have guessed #{@letters_guessed} with #{@guesses_remaining} guesses remaining"
+      @game_running = false
+      display_word
+      display_letters_guessed
     end
 
     private
+
+    def display_word
+      @word.each_char do |char|
+        if @letters_guessed.include?(char)
+          print char
+        else
+          @game_running = true
+          print "_"
+        end
+      end
+      puts ""
+    end
+
+    def display_letters_guessed
+      puts "Letters guessed: #{@letters_guessed.reduce { |str, letter| str + letter }}"
+    end
 
     def play_round
       exiting, input = ask_input
       if exiting
         define_exit(input)
-      elsif word_guessed?
-        @game_running = false
       else
         update_game_state(input)
         display_game_state
@@ -53,11 +69,7 @@ module Hangman
 
     def update_game_state(char)
       @letters_guessed.push(char)
-      @guesses_remaining -= 1 unless char == "a"
-    end
-
-    def word_guessed?
-      false
+      @guesses_remaining -= 1 unless @word.chars.include?(char)
     end
 
     # ask for guess that is a character that has not been guessed, or a code for exiting/saving the game

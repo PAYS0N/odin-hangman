@@ -59,11 +59,10 @@ module Hangman
 
     def load_game
       saves = open_saves
-      saves.each_with_index do |save, i|
-        print "#{i + 1}. "
-        Hangman::Game.from_yaml(save).display_game_state
-      end
+      display_saves(saves)
       game_num = ask_load(saves.length) - 1
+      return exit_game if game_num == -2
+
       @game_playing = Hangman::Game.from_yaml(saves[game_num])
       saves.delete_at(game_num)
       write_saves(saves)
@@ -71,10 +70,17 @@ module Hangman
       @game_playing.play_game
     end
 
+    def display_saves(saves)
+      saves.each_with_index do |save, i|
+        print "#{i + 1}. "
+        Hangman::Game.from_yaml(save).display_game_state
+      end
+    end
+
     def ask_load(length)
-      puts "What game would you like to load? Enter the number next to the game."
+      puts "What game would you like to load? Enter the number next to the game or \"-1\" to quit."
       input = 0
-      input = gets.chomp.to_i until input.between?(1, length + 1)
+      input = gets.chomp.to_i until input.between?(1, length + 1) || input == -1
       input
     end
 
@@ -82,17 +88,13 @@ module Hangman
       saves = open_saves
       saves.push(@game_playing.to_yaml)
       write_saves(saves)
-      "exit"
     end
 
     def open_saves
-      saves = YAML.load_file("saved_games.yml")[:saves]
+      data = YAML.load_file("saved_games.yml")
+      return [] if data.nil?
 
-      if saves.nil?
-        []
-      else
-        saves
-      end
+      data[:saves]
     end
 
     def write_saves(saves)
