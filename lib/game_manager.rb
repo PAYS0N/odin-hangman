@@ -28,7 +28,14 @@ module Hangman
     end
 
     def find_word
-      "apple"
+      word_index = rand(1..7557)
+      word = ""
+      File.open("cleaned_words.txt", "r") do |file|
+        word_index.times do
+          word = file.gets.chomp
+        end
+      end
+      word
     end
 
     # return "N" for new game or "L" for load
