@@ -1,2 +1,24 @@
 ---
-:saves: []
+:saves:
+- |
+  ---
+  :word: dicke
+  :letters:
+  - w
+  - e
+  - r
+  - d
+  :guesses: 5
+- |
+  ---
+  :word: northwest
+  :letters:
+  - d
+  - f
+  - r
+  - g
+  - a
+  - e
+  - i
+  - "n"
+  :guesses: 2

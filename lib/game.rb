@@ -73,9 +73,12 @@ module Hangman
 
     # ask for guess that is a character that has not been guessed, or a code for exiting/saving the game
     def ask_input
-      puts "What letter do you guess? Alternatively, you can save and exit, save and play again, or quit without saving. (SE, PA, QW)"
       input = ""
-      input = gets.chomp until %w[SE PA QW].include?(input) || (input.length == 1 && !@letters_guessed.include?(input))
+      until %w[SE PA QW].include?(input) || (input.length == 1 && !@letters_guessed.include?(input))
+        puts "What new letter do you guess? Alternatively, you can save and exit, save"
+        puts "and play again, or quit without saving. (SE, PA, QW)"
+        input = gets.chomp
+      end
       return [true, input] if %w[SE PA QW].include?(input)
 
       [false, input]
